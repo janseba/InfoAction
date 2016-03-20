@@ -3,7 +3,8 @@
 		<tabs>
 			<tab id="customTab" label="BuurtzorgT">
 				<group id="customGroup" label="Workflow Declaraties">
-					<button id="customButton1" label="Ophalen Careweb" size="large" onAction="conBoldSub" imageMso="ExportMoreMenu" />
+					<button id="getCareweb" label="Ophalen Careweb" size="large" onAction="ribbonClick" imageMso="ExportMoreMenu" tag="getCareweb" />
+					<button id="maintainSettings" label="Instellingen" imageMso="ViewDocumentActionsPane" size="large" onAction="ribbonClick" tag="maintainSettings" />
 				</group>
 			</tab>
 		</tabs>
