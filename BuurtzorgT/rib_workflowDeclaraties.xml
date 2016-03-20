@@ -6,6 +6,9 @@
 					<button id="getCareweb" label="Ophalen Careweb" size="large" onAction="ribbonClick" imageMso="ExportMoreMenu" tag="getCareweb" />
 					<button id="maintainSettings" label="Instellingen" imageMso="ViewDocumentActionsPane" size="large" onAction="ribbonClick" tag="maintainSettings" />
 				</group>
+				<group id="filters" label="Filters">
+					<button id="getAll" label="Alle DBC's" size="large" onAction="ribbonClick" imageMso="ExportMoreMenu" tag="getAll" />
+				</group>
 			</tab>
 		</tabs>
 	</ribbon>

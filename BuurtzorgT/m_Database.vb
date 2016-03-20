@@ -44,3 +44,9 @@ ErrorHandler:
     bReturn = False
     Resume ErrorExit
 End Function
+Public Sub RunSQL(ByVal sql As String)
+    If mcnConnection Is Nothing Then bCreateDBConnection gsDatabasePath & gsDATABASE_FILE
+    mcnConnection.Open
+    mcnConnection.Execute sql, , adExecuteNoRecords
+    mcnConnection.Close
+End Sub
