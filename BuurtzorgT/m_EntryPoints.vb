@@ -8,6 +8,8 @@ Public Sub ribbonClick(control As IRibbonControl)
             getCareweb
         Case "maintainSettings"
             maintainSettings
+        Case "getAll"
+            GetAll
     End Select
 
 ErrorExit:

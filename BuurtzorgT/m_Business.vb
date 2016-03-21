@@ -16,7 +16,11 @@ Sub importCSV()
     csvConnnection.ConnectionString = "Data Source=" & gsDatabasePath & ";" & _
         "Extended Properties=""text;HDR=Yes;FMT=Delimited;"""
     csvConnnection.Open
-    csvRecords.Open "SELECT [DBCNo],[CliÌÇnt ID] AS ClientID, [Hoofdbehandelaar diagnosefase] AS PID,[Behandelende eenheid] AS BehandelendeEenheid FROM [" & gsCSV_FILE & "]", csvConnnection
+    csvRecords.Open "SELECT [DBCNo],[CliÌÇnt ID] AS ClientID, [Hoofdbehandelaar diagnosefase] AS PID" & _
+        ",[Behandelende eenheid] AS BehandelendeEenheid, Financier,[Startdatum DBC] AS StartdatumDBC," & _
+        "[Einddatum DBC] AS EinddatumDBC,[Berekend bedrag huidige registratie] AS BerekendBedragDeclaratie," & _
+        "[Laatste declaratiedocument: Detailstatus] AS LaatsteDeclaratieDetailStatus,Onderwerp," & _
+        "IIF([Uitgezonderd van automatische decl#]=1,'Ja','Nee') AS UitgezonderdAutomatischeDeclaratie FROM [" & gsCSV_FILE & "]", csvConnnection
     csvRecords.MoveFirst
     Set dbRecords = GetRecordSet("SELECT * FROM tblDBC WHERE DBCNo IS NULL")
     Do Until csvRecords.EOF
@@ -61,6 +65,7 @@ Sub GetAll()
 End Sub
 Sub updateSingleView()
     Dim n As Name, pos As String, last As String
+    Application.EnableEvents = False
     pos = mcurrentRS.AbsolutePosition
     last = mcurrentRS.RecordCount
     For Each n In ActiveWorkbook.Names
@@ -85,6 +90,7 @@ Sub updateSingleView()
             .Shapes("cmdNext").DrawingObject.Font.ColorIndex = 1
         End If
     End With
+    Application.EnableEvents = True
 End Sub
 Sub cmdFirst()
     mcurrentRS.MoveFirst
@@ -105,5 +111,40 @@ End Sub
 Sub cmdLast()
     mcurrentRS.MoveLast
     updateSingleView
+End Sub
+Public Sub processChange(ByVal rng As Range)
+    With ActiveSheet
+        If rng.Address = .Range("db_AkteVanCessie").Address Then
+            mcurrentRS.Fields("AkteVanCessie").Value = rng.Value
+            UpdateRecords mcurrentRS
+        ElseIf rng.Address = .Range("db_Verwijsbrief").Address Then
+            mcurrentRS.Fields("Verwijsbrief").Value = rng.Value
+            UpdateRecords mcurrentRS
+        ElseIf rng.Address = .Range("db_Gedeclareerd").Address Then
+            mcurrentRS.Fields("Gedeclareerd").Value = rng.Value
+            UpdateRecords mcurrentRS
+        ElseIf rng.Address = .Range("db_Declaratiedatum").Address Then
+            mcurrentRS.Fields("Declaratiedatum").Value = rng.Value
+            UpdateRecords mcurrentRS
+        ElseIf rng.Address = .Range("db_Factuurnummer").Address Then
+            mcurrentRS.Fields("Factuurnummer").Value = rng.Value
+            UpdateRecords mcurrentRS
+        ElseIf rng.Address = .Range("db_DatumOntvangst").Address Then
+            mcurrentRS.Fields("DatumOntvangst").Value = rng.Value
+            UpdateRecords mcurrentRS
+        ElseIf rng.Address = .Range("db_OntvangenBedrag").Address Then
+            mcurrentRS.Fields("OntvangenBedrag").Value = rng.Value
+            UpdateRecords mcurrentRS
+        ElseIf rng.Address = .Range("db_OntvangstGecontroleerd").Address Then
+            mcurrentRS.Fields("OntvangstGecontroleerd").Value = rng.Value
+            UpdateRecords mcurrentRS
+        ElseIf rng.Address = .Range("db_Afgeletterd").Address Then
+            mcurrentRS.Fields("Afgeletterd").Value = rng.Value
+            UpdateRecords mcurrentRS
+        ElseIf rng.Address = .Range("db_OpgenomenInBoekhouding").Address Then
+            mcurrentRS.Fields("OpgenomenInBoekhouding").Value = rng.Value
+            UpdateRecords mcurrentRS
+        End If
+    End With
 End Sub
 
